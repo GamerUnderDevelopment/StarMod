@@ -1,0 +1,399 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "#!/bin/bash\n# Starbound Mod Manager\n# Version 1.0\n\n#Global Variables\nCOLS=$( tput cols )\nSTEAMFILE=$( find ~ -name \"Starbound.app\" 2> /dev/null )\nBOTTOM_ROW=$( tput lines )\nSBMM=~/Library/Application\\ Support/sbmm/\n\n# Variable Checking Function\nfunction vc {\n   local varKey=$1\n   local varValue=$2\n   echo \"   \"$varKey: $varValue\n}\n\n# Test New Display Output\nfunction displayOutput {\n\t# \tDeclare/Define Variables\n\tlocal aMsgs=(\"$@\")\t\t\t\t\t# Variable Contains All Message Strings\n\tlocal line_count=${#aMsgs[@]}\t\t# Counts The Number Of Message Strings By Line\n\tlocal insert_row=2\t\t\t\t\t# Set the start point of text insertion\n\tlocal message_len=14\t\t\t\t\t# Variable to store the longest message\n\tlocal insert_col=0\t\t\t\t\t# Variable to store the column for display message insertion\n\tlocal lineBreaks=0\t\t\t\t\t# Variable to store the number of line breaks after the message\n\tlocal tmpStr=\"\"\t\t\t\t\t\t# Variable to store the message string minus pre/post tags\n\t\t\t\t\t\t\t\t\t\t\t\t# Pre-tags:\n\t\t\t\t\t\t\t\t\t\t\t\t# BOLD_ = Bold Text\n\t\t\t\t\t\t\t\t\t\t\t\t# REV_ = Reversed Text\n\t\t\t\t\t\t\t\t\t\t\t\t# YELLOW_ = Yellow Text\n\t\t\t\t\t\t\t\t\t\t\t\t# PROMPT_ = Set 2 rows from the bottom\n\n\t# Get widest message length\n\tfor message in \"${aMsgs[@]}\"\n\tdo\n\t\tif [ ${#message} -gt $message_len ]\n\t\t then\n\t\t \tmessage_len=${#message}\n\t\tfi\n\tdone\n\n\tinsert_col=$(( ($COLS / 2) - ($message_len / 2) ))\n\n\tfor message in \"${aMsgs[@]}\"\n\tdo\n\t\t# Get Line Breaks\n\t\tlineBreaks=$(( ${message#*_LINES} ))\n \t\ttmpStr=\"_LINES\"$lineBreaks\n\t\tmessage=\"${message/$tmpStr/}\"\n\n \t\t# Check for Bold\n    \tif [ \"${message#*BOLD_}\" != \"${message}\" ]\n    \tthen\n \t\t\tmessage=\"${message/BOLD_/}\"\n \t\t\ttput bold\n \t\tfi\n\n \t\t# Check for Reverse\n \t\tif [ \"${message#*REV_}\" != \"${message}\" ]\n \t\tthen\n \t\t\tmessage=\"${message/REV_/}\"\n \t\t\ttput setaf 3\n \t\t\ttput rev\n \t\tfi\n\n\t\t# Check for Yellow\n \t\tif [ \"${message#*YELLOW_}\" != \"${message}\" ]\n\t\tthen\n\t\t\tmessage=\"${message/YELLOW_/}\"\n\t\t\ttput setaf 3\n \t\tfi\n\n\t\t# Check for PROMPT\n    \tif [ \"${message#*PROMPT_}\" != \"${message}\" ]\n    \tthen\n \t\t\tmessage=${message/PROMPT_/}\n \t\t\tinsert_row=$(( $BOTTOM_ROW - 4 ))\n \t\telse\n\t \t\tinsert_row=$(( insert_row + lineBreaks ))\n \t\tfi\n \t\ttput cup $insert_row $insert_col\n\t\tprintf \"${message}\"\n\t\ttput sgr0\n\tdone\n}\n\n# FIRST LAUNCH - Preflight\nfunction preflight {\n\tif [ ! -e ~/sb_configs ]\n\t\tthen\n\t\tdisplaySetup\n\tfi\n}\n\n# function modSearch {\n# \tlocal aMods=($( cat modlist.txt | cut -d' ' -f 1,2))\n# \tlocal iMods=${#aMods[@]}\n# \tlocal strReturn=$1\n\n# \tfor (( i=0; i<$iMods; i++ ))\n# \tdo\n# \t\tif [ $1 = ${aMods[$i]} ]\n# \t\tthen\n# \t\t\tstrReturn=${aMods[((i+1))]}\" \"\n# \t\tfi\n# \tdone\n\n# \techo \"${strReturn}\"\n# }\n\n# function modScan {\n# \tlocal aModDisplay=(\"$@\")\n# \tlocal aSubbedMods=( $(ls ~/sb_workshop/) )\n# \tlocal iChoice=1\n# \tlocal strName\n# \tlocal aModList=()\n\n# \tfor (( i=1; i<${#aSubbedMods[@]}; i++ ))\n# \t\tdo\n# \t\tstrName=$( modSearch \"${aSubbedMods[i]}\" )\n# \t\taModList+=($strName)\n# \t\tstrName=${strName//_/ }\n\n# \t\tif [ $i -lt 10 ]\n# \t\t\tthen\n# \t\t\taModDisplay+=(\"PROMPT_0${i}: ${strName}_LINES1\")\n# \t\telse\n# \t\t\taModDisplay+=(\"PROMPT_${i}: ${strName}_LINES1\")\n# \t\tfi\n# \tdone\n\n# \taModDisplay+=(\"PROMPT_Please select a mod to add to this modPack: _LINES3\")\n\n# \ttput clear\n\n# \tdisplayOutput \"${aModDisplay[@]}\"\n\n# \tread modSelect\n\n# \tmodSelect=$(( $modSelect - 1 ))\n\n# \tlocal selection=\"${aModList[$modSelect]}\"\n# \tif [[ $selection =~ ^[[:digit:]] ]]\n# \t\tthen\n# \t\topen \"http://steamcommunity.com/sharedfiles/filedetails/?id=${selection}\"\n\n# \t\ttput clear\n# \t\tlocal aPrompt=()\n# \t\taPrompt+=(\"BOLD_Please enter a name for this mod below:_LINES1\")\n# \t\taPrompt+=(\"PROMPT_This mod is: _LINES3\")\n# \t\tdisplayOutput \"${aPrompt[@]}\"\n# \t\tread modName\n\n# \t\tlocal saveName=\"${modName// /_}\"\n# \t\techo $selection $saveName >> modlist.txt\n# \telse\n# \t\tselection=\"${selection} [*]\"\n# \tfi\n\n# \tmodScan \"$@\"\n# }\n\n# function setupMod {\n# \tmessage=()\n# \tmessage+=(\"BOLD_REV_ Starbound Mod Manager _LINES1\")\n# \tmessage+=(\"BOLD_We will now provide a list of mods available to be added to your mod pack_LINES1\")\n# \tmessage+=(\"If the mod is know to SBMM it will be listed by name otherwise it will be listed by SteamID_LINES2\")\n\n# \tmodScan \"${message[@]}\"\n# }\n\n# # Setup A Mod Pack\n# function setupPack {\n# \tmessage=()\n# \tmessage+=(\"BOLD_REV_ Starbound Mod Manager _LINES1\")\n# \tmessage+=(\"BOLD_In order to setup a mod pack for you we will need you to name it:_LINES1\")\n# \tmessage+=(\"PROMPT_Name: _LINES3\")\n\n# \ttput clear\n# \tdisplayOutput \"${message[@]}\"\n\n# \tread packName\n# \tpackName=\"${packName// /_}\"\n\n# \techo $packName >> modpacks.txt\n\n# \tsetupMod\n# }\n\n# Main Menu Display\nfunction mainMenu {\n\tmessage=()\n\tmessage+=(\"BOLD_REV_ Starbound Mod Manager _LINES1\")\n\tmessage+=(\"Please select from the options below:_LINES2\")\n\tmessage+=(\"BOLD_YELLOW_   1. Play Starbound_LINES1\")\n\tmessage+=(\"BOLD_YELLOW_   2. Manage ModPacks_LINES1\")\n\tmessage+=(\"BOLD_YELLOW_   3. Uninstall SBMM_LINES1\")\n\tmessage+=(\"BOLD_YELLOW_   4. Exit SBMM_LINES1\")\n\tmessage+=(\"PROMPT_Please enter your selection number [1 - 4]: _LINES0\")\n\n\ttput clear\n\n\tdisplayOutput \"${message[@]}\"\n\n\tread menuChoice\n\n\tcase $menuChoice in\n\t\t1) echo \"Play Starbound\"\n\t\t\t;;\n\t\t2) setupPack\n\t\t\t;;\n\t\t3) displaySetup\n\t\t\t;;\n\t\t4) exit 0\n\t\t\t;;\n\t\t*) echo \"Not a Correct Selection\"\n\t\t\tmainMenu\n\t\t\t;;\n\tesac\n}\n\n# Symlink File Setup\nfunction fileSetup {\n\tSTEAMFILE=${STEAMFILE/\\/osx\\/Starbound.app/}\n \tlocal steamMods=${STEAMFILE/Starbound/Starbound\\/mods\\/}\n \tlocal steamConfig=${STEAMFILE/Starbound/Starbound\\/osx\\/}\n \tlocal steamApps=${STEAMFILE/\\/common\\/Starbound/}\n \tlocal steamWorkshop=${steamApps/SteamApps/SteamApps\\/workshop\\/content\\/211820\\/}\n\n \trm -rf ~/Library/Application\\ Support/sbmm\n\n\tmkdir \"${SBMM}\"\n\tmkdir \"${SBMM}\"db\n\n\tif [ ! -e \"${steamWorkshop}\" ]\n\t\tthen\n\t\tmkdir -p \"${steamWorkshop}\"\n\tfi\n\n\tln -s \"${steamMods}\" \"${SBMM}\"sb_mods\n\tln -s \"${steamConfig}\" \"${SBMM}\"sb_configs\n\tln -s \"${steamWorkshop}\" \"${SBMM}\"sb_workshop\n\ttouch \"${SBMM}\"db/modlist.txt\n\ttouch \"${SBMM}\"db/modpacks.txt\n\n\t# ./modScan.sh &\n}\n\n# Function to Display Setup Message\nfunction displaySetup {\n\tmessage=()\n   message+=(\"BOLD_REV_ Welcome to the Starbound Mod Manager _LINES2\")\n   message+=(\"We've detected this is your first time running SBMM!_LINES2\")\n   message+=(\"BOLD_     Symlinks that will be created:_LINES2\")\n   message+=(\"     ~/sb_configs/_LINES1\")\n   message+=(\"     ~/sb_mods/_LINES1\")\n   message+=(\"     ~/sb_workshop/_LINES1\")\n   message+=(\"BOLD_ One moment please while we setup necessary files _LINES3\")\n\n\ttput clear\n\n   displayOutput \"${message[@]}\"\n   fileSetup\n\n\tpid=$!\n\n\ti=1\n\n\twhile [ -n \"$( ps -p ${pid} | grep ${pid} )\" ]\n\tdo\n\t\t\tmessage=()\n   \t\tcase $i in\n   \t\t\t1) message+=(\"BOLD_YELLOW_ [ .     ] _LINES14\")\n   \t\t\t\t;;\n   \t\t\t2)\tmessage+=(\"BOLD_YELLOW_ [ ..    ] _LINES14\")\n   \t\t\t\t;;\n   \t\t\t3)\tmessage+=(\"BOLD_YELLOW_ [ ...   ] _LINES14\")\n   \t\t\t\t;;\n   \t\t\t4) message+=(\"BOLD_YELLOW_ [ ....  ] _LINES14\")\n\t\t\t\t\t;;\n\t\t\t\t5) message+=(\"BOLD_YELLOW_ [ ..... ] _LINES14\")\n\t\t\t\t\t;;\n   \t\tesac\n\n\t\t((i++))\n\t\tif [ $i -eq 6 ]\n\t\t\tthen\n\t\t\ti=1\n\t\tfi\n\t\tsleep 1\n \t\tdisplayOutput \"${message[@]}\"\n\tdone\n\n\tcp modlist.txt ~/sbmm/modlist.txt\n\trm modlist.txt\n}\n\npreflight\nmainMenu\n# #modScan",
+			"file": "SBMM.sh",
+			"file_size": 7042,
+			"file_write_time": 131624401333254403,
+			"settings":
+			{
+				"buffer_size": 7042,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#!/bin/bash\n\nSBMM=~/Library/Application\\ Support/sbmm/\n\nfunction modSearch {\n\tlocal aMods=($( cat \"${SBMM}\"db/modlist.txt | cut -d' ' -f 1,2))\n\tlocal iMods=${#aMods[@]}\n\tlocal strReturn=$1\n\n\tfor (( i=0; i<$iMods; i++ ))\n\tdo\n\t\tif [ $1 = ${aMods[$i]} ]\n\t\tthen\n\t\t\tstrReturn=${aMods[((i+1))]}\" \"\n\t\tfi\n\tdone\n\n\techo \"${strReturn}\"\n}\n\nfunction modScan {\n\tlocal aSubbedMods=( $(ls \"${SBMM}\"sb_workshop/) )\n\tlocal iChoice=1\n\tlocal tmpURL\n\tlocal strName\n\tlocal steamID\n\tlocal steamURL=\"http://steamcommunity.com/sharedfiles/filedetails/?id=\"\n\n\tfor (( i=1; i<${#aSubbedMods[@]}; i++ ))\n\tdo\n\t\tstrName=$( modSearch \"${aSubbedMods[i]}\" )\n\t \tif [[ $strName =~ ^[[:digit:]] ]]\n\t\t\tthen\n\t\t\tsteamID=\"${aSubbedMods[$i]}\"\n\t\t\ttmpURL=\"${steamURL}${steamID}\"\n\t\t\tstrName=$( curl -s $tmpURL | grep -e \"<title>\" )\n\t\t\tstrName=\"${strName/<title>Steam Workshop :: /}\"\n\t\t\tstrName=\"${strName/<\\/title>/}\"\n\t\t\tstrName=\"${strName//&quot;/\\\"}\"\n\t\t\tstrName=\"${strName// /_}\"\n\t\t\techo $steamID $strName >> \"${SBMM}\"db/modlist.txt\n\t\tfi\n\tdone\n\n\tsleep 10\n}\n\nmodScan\n",
+			"file": "modScan.sh",
+			"file_size": 1023,
+			"file_write_time": 131624401401267010,
+			"settings":
+			{
+				"buffer_size": 1023,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "",
+			"file": "modpacks.txt",
+			"file_size": 0,
+			"file_write_time": 131624401402282647,
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "PSUEDO CODE\n\nSTORE FLATFILES IN A USER/SBMM folder\n\nFIRST LAUNCH\n\tCreate config folder symlink\n\tCreate mod folder symlink\n\tCreate workshop folder symlink\n\tCreate a flatfile database of mods\n\nMain Menu\n\t1. PLAY STARBOUND\n\t2. MANAGE MODPACKS\n\t3. RE-INSTALL SBMM\n\t4. EXIT\n\n1. PLAY STARBOUND\n\ta. List all modpacks\n\tb. Allow user to select modpack\n\tc. Copy the txt from the correct modpack config over the default config\n\td. Launch the game\n\n2. MANAGE MODPACKS\n\t2.1 If a modpack flatfile database doesn't exist - Create it\n\t1. Add Modpack\n\t\ta. Allow user to name modpack\n\t\tb. Create a storage folder for the modpack\n\t\tc. Create a config file for the modpack\n\t\td. Create a mod folder for the modpack\n\t\te. List mods\n\t\te. Allow user to Add Mods to the ModPack\n\t\tf. Allow user to exit\n\t2. View & Edit ModPacks\n\t\ta. List ModPacks\n\t\tb. Allow user to select ModPack\n\t\tc. Display a list of the mods in the ModPack\n\t\td. Allow Users to select a mod to add, remove, or select a\n\t\t   new mod for the modpack\n\t\te. Allow users to exit\n\n\t3. Delete Modpack\n\t\ta. List ModPacks\n\t\tb. Select a ModPack to delete\n\t\tc. Allow user to exit\n\n3. UNINSTALL SBMM\n\t1. Save ModPack Files for Later?\n\t\ty. Move forward\n\t\tn. Rm ~/SBMM\n\n\t2. Rm all files except storage, mod, and mod config files if necessary. Restore config to default.",
+			"file": "PSUEDOCODE.txt",
+			"file_size": 1297,
+			"file_write_time": 131624401401787341,
+			"settings":
+			{
+				"buffer_size": 1297,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#!/bin/bash\n\naMods=($( cat modlist.txt | cut -d' ' -f 1,2))\niMods=${#aMods[@]}\nstrReturn='null'$1\n\nfor (( i=0; i<$iMods; i++ ))\ndo\n   if [ $1 = ${aMods[$i]} ]\n   then\n      strReturn=${aMods[((i+1))]}\" \" \n   fi\ndone\n\necho $strReturn",
+			"file": "modSearch.sh",
+			"file_size": 232,
+			"file_write_time": 131624401401552183,
+			"settings":
+			{
+				"buffer_size": 232,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/cody/Downloads/SBMM/modlist.txt",
+		"/Users/cody/Downloads/SBMM/PSUEDOCODE.txt",
+		"/Users/cody/Downloads/SBMM/SBMM.sh"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"PROMPT_",
+			"tmpStr",
+			"steamFile",
+			"cols",
+			"rows"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"COLS"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "SBMM.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7042,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5676,
+								5676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "modScan.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1023,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								936,
+								936
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "modpacks.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "PSUEDOCODE.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1297,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								157,
+								157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "modSearch.sh",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 232,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "sbmm.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"modscan",
+				"modScan.sh"
+			],
+			[
+				"pes",
+				"PSUEDOCODE.txt"
+			],
+			[
+				"sbmm.sh",
+				"SBMM.sh"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
