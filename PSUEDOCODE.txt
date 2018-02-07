@@ -1,0 +1,51 @@
+PSUEDO CODE
+
+STORE FLATFILES IN A USER/SBMM folder
+
+FIRST LAUNCH
+	Create config folder symlink
+	Create mod folder symlink
+	Create workshop folder symlink
+	Create a flatfile database of mods
+
+Main Menu
+	1. PLAY STARBOUND
+	2. MANAGE MODPACKS
+	3. RE-INSTALL SBMM
+	4. EXIT
+
+1. PLAY STARBOUND
+	a. List all modpacks
+	b. Allow user to select modpack
+	c. Copy the txt from the correct modpack config over the default config
+	d. Launch the game
+
+2. MANAGE MODPACKS
+	2.1 If a modpack flatfile database doesn't exist - Create it
+	1. Add Modpack
+		a. Allow user to name modpack
+		b. Create a storage folder for the modpack
+		c. Create a config file for the modpack
+		d. Create a mod folder for the modpack
+		e. List mods
+		e. Allow user to Add Mods to the ModPack
+		f. Allow user to exit
+	2. View & Edit ModPacks
+		a. List ModPacks
+		b. Allow user to select ModPack
+		c. Display a list of the mods in the ModPack
+		d. Allow Users to select a mod to add, remove, or select a
+		   new mod for the modpack
+		e. Allow users to exit
+
+	3. Delete Modpack
+		a. List ModPacks
+		b. Select a ModPack to delete
+		c. Allow user to exit
+
+3. UNINSTALL SBMM
+	1. Save ModPack Files for Later?
+		y. Move forward
+		n. Rm ~/SBMM
+
+	2. Rm all files except storage, mod, and mod config files if necessary. Restore config to default.
