@@ -1,0 +1,391 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "SBMM.sh",
+			"settings":
+			{
+				"buffer_size": 7042,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modScan.sh",
+			"settings":
+			{
+				"buffer_size": 1023,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modpacks.txt",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modlist.txt",
+			"settings":
+			{
+				"buffer_size": 1,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "PSUEDO CODE\n\nSTORE FLATFILES IN A USER/SBMM folder\n\nFIRST LAUNCH\nx\tCreate config folder symlink\nX\tCreate mod folder symlink\nX\tCreate workshop folder symlink\n\tCreate a flatfile database of mods\n\nMain Menu\n\t1. PLAY STARBOUND\n\t2. MANAGE MODPACKS\n\t3. RE-INSTALL SBMM\n\t4. EXIT\n\n1. PLAY STARBOUND\n\ta. List all modpacks\n\tb. Allow user to select modpack\n\tc. Copy the txt from the correct modpack config over the default config\n\td. Launch the game\n\n2. MANAGE MODPACKS\n\t2.1 If a modpack flatfile database doesn't exist - Create it\n\t1. Add Modpack\n\t\ta. Allow user to name modpack\n\t\tb. Create a storage folder for the modpack\n\t\tc. Create a config file for the modpack\n\t\td. Create a mod folder for the modpack\n\t\te. List mods\n\t\te. Allow user to Add Mods to the ModPack\n\t\tf. Allow user to exit\n\t2. View & Edit ModPacks\n\t\ta. List ModPacks\n\t\tb. Allow user to select ModPack\n\t\tc. Display a list of the mods in the ModPack\n\t\td. Allow Users to select a mod to add, remove, or select a\n\t\t   new mod for the modpack\n\t\te. Allow users to exit\n\n\t3. Delete Modpack\n\t\ta. List ModPacks\n\t\tb. Select a ModPack to delete\n\t\tc. Allow user to exit\n\n3. UNINSTALL SBMM\n\t1. Save ModPack Files for Later?\n\t\ty. Move forward\n\t\tn. Rm ~/SBMM\n\n\t2. Rm all files except storage, mod, and mod config files if necessary. Restore config to default.",
+			"file": "PSUEDOCODE.txt",
+			"file_size": 1297,
+			"file_write_time": 131607645528511971,
+			"settings":
+			{
+				"buffer_size": 1300,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/Users/cody/Downloads/SBMM/modlist.txt",
+		"/Users/cody/Downloads/SBMM/PSUEDOCODE.txt",
+		"/Users/cody/Downloads/SBMM/SBMM.sh"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"PROMPT_",
+			"tmpStr",
+			"steamFile",
+			"cols",
+			"rows"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"COLS"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "SBMM.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7042,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5676,
+								5676
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1795.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "modScan.sh",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1023,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								936,
+								936
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "modpacks.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "modlist.txt",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 4,
+					"file": "PSUEDOCODE.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1300,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								157,
+								157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "sbmm.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"modscan",
+				"modScan.sh"
+			],
+			[
+				"pes",
+				"PSUEDOCODE.txt"
+			],
+			[
+				"sbmm.sh",
+				"SBMM.sh"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
